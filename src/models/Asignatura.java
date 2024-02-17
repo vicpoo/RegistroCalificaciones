@@ -9,13 +9,13 @@ public class Asignatura {
 
     private ArrayList<Estudiante> estudiantes = new java.util.ArrayList<>();
 
-public boolean addEstudiante(Estudiante estudiante){
-boolean status;
-status =estudiantes.add(estudiante);
-return status;
-}
+    public boolean addEstudiante(Estudiante estudiante){
+        boolean status;
+        status =estudiantes.add(estudiante);
+        return status;
+    }
 
-public ArrayList<Estudiante> getEstudiantes(){
-return estudiantes;
-}
+    public ArrayList<Estudiante> getEstudiantes(){
+        return estudiantes;
+    }
 }

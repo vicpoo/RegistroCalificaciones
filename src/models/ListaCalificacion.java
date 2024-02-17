@@ -2,56 +2,44 @@ package models;
 
 public class ListaCalificacion {
 
-    private float Calificacion1;
+    private float calificacion1;
+    private float calificacion2;
+    private float calificacion3;
 
-    private float Calificacion2;
-
-    private float Calificacion3;
-
-    public float promedio(){
-        float promedio;
-        promedio = (Calificacion1 + Calificacion2 + Calificacion3)/3;
-        return promedio;
-
+    public float promedio() {
+        return (calificacion1 + calificacion2 + calificacion3) / 3;
     }
-
     public float getCalificacion1() {
-        return Calificacion1;
+        return calificacion1;
     }
 
-    public boolean setCalificacion1(float calificacion1) {
-        Calificacion1 = calificacion1;
-        return false;
+    public void setCalificacion1(float calificacion1) {
+        this.calificacion1 = calificacion1;
     }
 
     public float getCalificacion2() {
-        return Calificacion2;
+        return calificacion2;
     }
 
-    public boolean setCalificacion2(float calificacion2) {
-        Calificacion2 = calificacion2;
-        return false;
+    public void setCalificacion2(float calificacion2) {
+        this.calificacion2 = calificacion2;
     }
 
     public float getCalificacion3() {
-        return Calificacion3;
+        return calificacion3;
     }
 
-    public boolean setCalificacion3(float calificacion3) {
-        Calificacion3 = calificacion3;
-        return false;
+    public void setCalificacion3(float calificacion3) {
+        this.   calificacion3 = calificacion3;
     }
-
 
     @Override
     public String toString() {
         return "Calificacion{" +
-                "Calificacion1=" + Calificacion1 +
-                ", Calificacion2=" + Calificacion2 +
-                ", Calificacion3=" + Calificacion3 +
+                "Calificacion1=" + calificacion1 +
+                ", Calificacion2=" + calificacion2 +
+                ", Calificacion3=" + calificacion3 +
+                ", promedio=" + promedio() +
                 '}';
     }
-
-
-
 }

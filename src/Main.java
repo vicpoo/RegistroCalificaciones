@@ -8,10 +8,10 @@ import models.Calificaciones;
 public class Main {
     private static Scanner teclado = new Scanner(System.in);
     private static Asignatura poo = new Asignatura();
-    private static Calificaciones cal1 = new Calificaciones();
-    private static Calificaciones cal2 = new Calificaciones();
-    private static Calificaciones cal3 = new Calificaciones();
-    private static ListaCalificacion listaCalificacion= new ListaCalificacion();
+    private static ArrayList<Estudiante> listaEstudiantes = new ArrayList<>();
+    private static ArrayList<ListaCalificacion> Calificaciones1 = new ArrayList<>();
+    private static ArrayList<ListaCalificacion> Calificaciones2 = new ArrayList<>();
+    private static ArrayList<ListaCalificacion> Calificaciones3 = new ArrayList<>();
     public static void main(String[] args) {
 
         int opcion;
@@ -37,31 +37,7 @@ public class Main {
                                 addEstudiante();
                                 break;
                             case 2:
-                                int eleccion;
-                                do {
-                                    System.out.println("1. Calificacion del primer corte");
-                                    System.out.println("2. Calificacion del segundo corte");
-                                    System.out.println("3. Califcion del tercer corte");
-                                    System.out.println("4. Salir");
-                                    System.out.print("Opcion: ");
-                                    eleccion = teclado.nextInt();
-                                    switch (eleccion){
-                                        case 1:
-                                            addCalificacion1();
-                                            break;
-                                        case 2:
-                                            addCalificacion2();
-                                            break;
-                                        case 3:
-                                            addCalificacion3();
-                                            break;
-                                        case 4:
-                                            break;
-                                        default:
-                                            System.out.println("Ingrese una opcion valida");
-                                            break;
-                                    }
-                                } while (eleccion != 4); break;
+                                addCalificaciones();
                             case 3:
                                 verAlumno();
                                 break;
@@ -83,13 +59,9 @@ public class Main {
                         escoger = teclado.nextInt();
                         switch (escoger){
                             case 1:
-                                verCalificacion1();
-                                break;
                             case 2:
-                                verCalificacion2();
-                                break;
                             case 3:
-                                verCalificacion3();
+                                verCalificaciones(escoger);
                                 break;
                             case 4:
                                 verPromedio();
@@ -109,7 +81,7 @@ public class Main {
         } while (opcion != 3);
     }
 
-    public static void addEstudiante() {
+    public static void addEstudiante(){
         int Matricula;
         String Nombre;
         System.out.println("ingrese la Matricula:");
@@ -118,6 +90,7 @@ public class Main {
         System.out.println("Ingrese el nombre completo del alumno: ");
         Nombre = teclado.nextLine();
         Estudiante estudiante = new Estudiante(Matricula, Nombre);
+        listaEstudiantes.add(estudiante);
         if (verificarMatricula(Matricula)) {
             if (poo.addEstudiante(estudiante))
                 System.out.println("Se agrego exitosamente.");
@@ -138,114 +111,109 @@ public class Main {
         return true;
     }
 
-    public static void addCalificacion1() {
+
+    public static void addCalificaciones() {
+        int matricula;
+        System.out.println("Ingrese la matricula del alumno: ");
+        matricula = teclado.nextInt();
+
+        Estudiante estudiante = getEstudianteByMatricula(matricula);
+        if (estudiante == null) {
+            System.out.println("No se encontro al estudiante con esa matricula.");
+            return;
+        }
+
         ListaCalificacion calificacion = new ListaCalificacion();
-        float calificacion1;
-        System.out.println("Ingrese la matricula del estudiante deseado: ");
-        int matricula = teclado.nextInt();
 
-        Estudiante estudiante = buscarEstudiante(matricula);
-        if (estudiante != null) {
-            ListaCalificacion listaCalificacion1 = new ListaCalificacion();
-            System.out.println("ingrese la calificacion del primer corte: ");
-            calificacion1 = teclado.nextFloat();
-            listaCalificacion.setCalificacion1(calificacion1);
+        System.out.println("Ingrese la calificacion del primer corte: ");
+        float calificacion1 = teclado.nextFloat();
+        calificacion.setCalificacion1(calificacion1);
+        Calificaciones1.add(calificacion);
 
-            if (cal1.addCalificacion1(calificacion)){
-                System.out.println("Registro de la calificacion exitosa");
-            }else {
-                System.out.println("Error al registrar calificacion. Intentelo de nuevo");
+        System.out.println("Ingrese la calificacion del segundo corte: ");
+        float calificacion2 = teclado.nextFloat();
+        calificacion.setCalificacion2(calificacion2);
+        Calificaciones2.add(calificacion);
+
+        System.out.println("Ingrese la calificacion del tercer corte: ");
+        float calificacion3 = teclado.nextFloat();
+        calificacion.setCalificacion3(calificacion3);
+        Calificaciones3.add(calificacion);
+
+        System.out.println("Calificaciones agregadas exitosamente.");
+    }
+
+    public static void verCalificaciones(int corte) {
+        ArrayList<ListaCalificacion> Calificaciones;
+
+        switch (corte) {
+            case 1:
+                Calificaciones = Calificaciones1;
+                break;
+            case 2:
+                Calificaciones = Calificaciones2;
+                break;
+            case 3:
+                Calificaciones = Calificaciones3;
+                break;
+            default:
+                System.out.println("Corte no válido.");
+                return;
+        }
+
+        for (ListaCalificacion calificacion : Calificaciones) {
+            switch (corte) {
+                case 1:
+                    System.out.println("Calificacion del primer corte: " + calificacion.getCalificacion1());
+                    break;
+                case 2:
+                    System.out.println("Calificacion del segundo corte: " + calificacion.getCalificacion2());
+                    break;
+                case 3:
+                    System.out.println("Calificacion del tercer corte: " + calificacion.getCalificacion3());
+                    break;
             }
-        } else {
-            System.out.println("Estudiante no encontrado");
         }
     }
 
-
-    public static void addCalificacion2(){
-        float calificacion2;
-        System.out.println("Ingrese la matricula del estudiante: ");
-        int matricula = teclado.nextInt();
-
-        Estudiante estudiante = buscarEstudiante(matricula);
-        if (estudiante != null){
-            ListaCalificacion calificacion = new ListaCalificacion();
-            System.out.println("Ingrese la calificación del segundo corte: ");
-            calificacion2 = teclado.nextFloat();
-            calificacion.setCalificacion2(calificacion2);
-
-            if (cal2.addCalificacion2(calificacion, estudiante)) {
-                System.out.println("Registro de la calificación exitosa");
-            } else {
-                System.out.println("Error al registrar calificación. Intenta de nuevo");
-            }
-        } else {
-            System.out.println("Estudiante no encontrado.");
-        }
-    }
-
-    public static void addCalificacion3(){
-        float calificacion3;
-        System.out.println("Ingrese la matrícula del estudiante: ");
-        int matricula = teclado.nextInt();
-
-        Estudiante estudiante = buscarEstudiante(matricula);
-        if (estudiante != null) {
-            ListaCalificacion calificacion = new ListaCalificacion();
-            System.out.println("Ingrese la calificación del tercer corte: ");
-            calificacion3 = teclado.nextFloat();
-            calificacion.setCalificacion3(calificacion3);
-
-            if (cal3.addCalificacion3(calificacion, estudiante)) {
-                System.out.println("Registro de la calificación exitosa");
-            } else {
-                System.out.println("Error al registrar calificación. Intenta de nuevo");
-            }
-        } else {
-            System.out.println("Estudiante no encontrado.");
-        }
-    }
-
-    private static Estudiante buscarEstudiante(int matricula){
-        ArrayList<Estudiante> estudiantes = poo.getEstudiantes();
-        for (Estudiante estudiante : estudiantes){
-            if (estudiante.getMatricula() == matricula){
+    public static Estudiante getEstudianteByMatricula(int matricula) {
+        for (Estudiante estudiante : listaEstudiantes) {
+            if (estudiante.getMatricula() == matricula) {
                 return estudiante;
             }
         }
         return null;
     }
-
-    public static void verCalificacion1(){
-        ArrayList<ListaCalificacion> calf1 = cal1.getCalificaciones1();
-        for (int i = 0; i <calf1.size() ; i++) {
-            System.out.println(calf1.get(i));
+    public static void verAlumno() {
+        for (Estudiante estudiante : listaEstudiantes) {
+            System.out.println(estudiante);
         }
     }
 
-    public static void verCalificacion2(){
-        ArrayList<ListaCalificacion> calf2 = cal2.getCalificacion2();
-        for (int k = 0; k <calf2.size() ; k++){
-            System.out.println(calf2.get(k));
-        }
-    }
-
-    public static void verCalificacion3(){
-        ArrayList<ListaCalificacion> calf3 = cal3.getCalificacion3();
-        for (int l = 0; l<calf3.size(); l++){
-            System.out.println(calf3.get(l));
-        }
-    }
-
-    public static void verAlumno(){
-        ArrayList<Estudiante> lista;
-        lista = poo.getEstudiantes();
-        for (int m = 0; m<lista.size(); m++)
-            System.out.println(lista.get(m));
-    }
     public static void verPromedio(){
-        ListaCalificacion promedio = new ListaCalificacion();
-        float ss = listaCalificacion.promedio();
-        System.out.println(ss);
+        float suma =0;
+        int count = 0;
+
+        for (ListaCalificacion calificacion1 : Calificaciones1) {
+            suma += calificacion1.promedio();
+            count++;
+        }
+
+        for (ListaCalificacion calificacion2 : Calificaciones2) {
+            suma += calificacion2.promedio();
+            count++;
+        }
+
+        for (ListaCalificacion calificacion3 : Calificaciones3) {
+            suma += calificacion3.promedio();
+            count++;
+        }
+
+        if (count > 0) {
+            float promedio = suma / count;
+            System.out.println("Promedio de calificaciones: " + promedio);
+        } else {
+            System.out.println("No hay calificaciones para hacer el calculo.");
+        }
     }
 }
